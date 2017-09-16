@@ -22,6 +22,16 @@ class BooksApp extends React.Component {
     this.setState({ query: query.trim() })
   }
 
+  onChangeShelf = (bookToUpdate, newShelf) => {
+    const newBook = Object.assign({}, bookToUpdate, {shelf: newShelf})
+    const booksExcludingBook = this.state.books.filter((someBook) => someBook.id !== bookToUpdate.id)
+    const newBookArray = booksExcludingBook.concat(newBook)
+    this.setState({ books: newBookArray})
+    BooksAPI.update(bookToUpdate, newShelf).then((results) => {console.log(results)})
+  }
+
+
+
   render() {
     const { query, books } = this.state
 
@@ -36,12 +46,13 @@ class BooksApp extends React.Component {
            />
         )}/>
         <Route exact path='/' render={() => (
-          <Home books={books}/>
+          <Home
+            books={books}
+            onChangeShelf={this.onChangeShelf}
+          />
         )}/>
-        )}
       </div>
-    )
-  }
+    )}
 }
 
 export default BooksApp

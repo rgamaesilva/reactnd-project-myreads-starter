@@ -8,7 +8,10 @@ class Home extends Component {
     return (
       <div className="list-books">
         <Header/>
-        <ListBooks books={this.props.books}/>
+        <ListBooks
+          books={this.props.books}
+          onChangeShelf={this.props.onChangeShelf}
+        />
         <div className="open-search">
           <Link to='/search'>Add a book</Link>
         </div>
