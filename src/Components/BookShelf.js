@@ -13,6 +13,8 @@ class BookShelf extends Component {
                 <Book key={book.id}
                   title={book.title}
                   authors={book.authors}
+                  imageLinks={book.imageLinks}
+                  id={book.id}
                 />
               )
             )}
