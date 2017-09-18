@@ -2,6 +2,7 @@ import React from 'react'
 import Home from './Components/Home.js'
 import { Route } from 'react-router-dom'
 import SearchBooks from './Components/SearchBooks.js'
+import Rating from './Components/Rating.js'
 import './App.css'
 import * as BooksAPI from './BooksAPI'
 
@@ -9,17 +10,14 @@ class BooksApp extends React.Component {
 
   state = {
     books: [],
-    query: ''
+    query: '',
+    searchedBooks: []
   }
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({ books: books })
     })
-  }
-
-  updateQuery = (query) => {
-    this.setState({ query: query.trim() })
   }
 
   onChangeShelf = (bookToUpdate, newShelf) => {
@@ -30,10 +28,30 @@ class BooksApp extends React.Component {
     BooksAPI.update(bookToUpdate, newShelf).then((results) => {console.log(results)})
   }
 
+  onSearchBooks = (event) => {
+    const query = event.target.value
+    this.setState({ query })
+    if (query.length > 0) {
+      BooksAPI.search(query, 20).then((searchedBooks) => {
+        if (searchedBooks.error === undefined) {
+          this.setState({ searchedBooks })
+        } else {
+          this.setState({ searchedBooks: [] })
+        }
+      })
+    } else {
+      this.setState({ searchedBooks: [] })
+    }
 
+    console.log(query)
+  }
+
+  onRatingBook = (book, rating) => {
+
+  }
 
   render() {
-    const { query, books } = this.state
+    const { query, books, searchedBooks } = this.state
 
     return (
       <div className="app">
@@ -41,14 +59,19 @@ class BooksApp extends React.Component {
           <SearchBooks
             books={books}
             query={query}
-            componentDidMount={this.componentDidMount}
-            updateQuery={this.updateQuery}
+            onSearchBooks={this.onSearchBooks}
+            searchedBooks={searchedBooks}
+            onChangeShelf={this.onChangeShelf}
            />
         )}/>
         <Route exact path='/' render={() => (
           <Home
             books={books}
             onChangeShelf={this.onChangeShelf}
+          />
+        )}/>
+        <Route path='/rating' render={() => (
+          <Rating
           />
         )}/>
       </div>
