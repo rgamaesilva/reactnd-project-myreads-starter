@@ -8,19 +8,19 @@ class Rating extends Component {
         <Link className="close-search" to='/'>Close</Link>
         <div className='rating-book-star'>
           <p>
-            <a>1 Star</a>
+            <a onClick={() => this.props.onStarChange(this.props.book, 1)}>1 Star</a>
           </p>
           <p>
-            <a>2 Star</a>
+            <a onClick={() => this.props.onStarChange(this.props.book, 2)}>2 Star</a>
           </p>
           <p>
-            <a>3 Star</a>
+            <a onClick={() => this.props.onStarChange(this.props.book, 3)}>3 Star</a>
           </p>
           <p>
-            <a>4 Star</a>
+            <a onClick={() => this.props.onStarChange(this.props.book, 4)}>4 Star</a>
           </p>
           <p>
-            <a>5 Star</a>
+            <a onClick={() => this.props.onStarChange(this.props.book, 5)}>5 Star</a>
           </p>
         </div>
       </div>

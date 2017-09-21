@@ -4,13 +4,17 @@ import BookShelf from './BookShelf.js'
 class ListBooks extends Component {
 
   render () {
+
+    const { books, onChangeShelf } = this.props
+
+
     return (
       <div className="list-books-content">
         <div>
           <BookShelf
             title='Currently Reading'
-            books={this.props.books.filter((book) => book.shelf === 'currentlyReading')}
-            onChangeShelf={this.props.onChangeShelf}
+            books={books.filter((book) => book.shelf === 'currentlyReading')}
+            onChangeShelf={onChangeShelf}
           />
           <BookShelf
             title='Want to Read'

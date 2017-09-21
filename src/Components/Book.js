@@ -6,7 +6,7 @@ class Book extends Component {
 
   render () {
 
-    const { book, onChangeShelf} = this.props
+    const { book, onChangeShelf } = this.props
 
     const imageUrl = book.imageLinks ? book.imageLinks.thumbnail : ''
 
@@ -23,7 +23,7 @@ class Book extends Component {
             <BookChanger
               book={book}
               onChangeShelf={onChangeShelf} />
-            <Link to='/rating' className="book-shelf-rating">
+            <Link to={`/rating/${book.id}`} className="book-shelf-rating">
               {book.averageRating}
             </Link>
           </div>

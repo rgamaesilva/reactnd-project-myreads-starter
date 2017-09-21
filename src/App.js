@@ -1,6 +1,6 @@
 import React from 'react'
 import Home from './Components/Home.js'
-import { Route } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 import SearchBooks from './Components/SearchBooks.js'
 import Rating from './Components/Rating.js'
 import './App.css'
@@ -11,7 +11,7 @@ class BooksApp extends React.Component {
   state = {
     books: [],
     query: '',
-    searchedBooks: []
+    searchedBooks: [],
   }
 
   componentDidMount() {
@@ -25,7 +25,7 @@ class BooksApp extends React.Component {
     const booksExcludingBook = this.state.books.filter((someBook) => someBook.id !== bookToUpdate.id)
     const newBookArray = booksExcludingBook.concat(newBook)
     this.setState({ books: newBookArray})
-    BooksAPI.update(bookToUpdate, newShelf).then((results) => {console.log(results)})
+    BooksAPI.update(bookToUpdate, newShelf)
   }
 
   onSearchBooks = (event) => {
@@ -38,16 +38,35 @@ class BooksApp extends React.Component {
         } else {
           this.setState({ searchedBooks: [] })
         }
+        const returnBookWithCorrectShelf = (searchedBook) => {
+          const filteredMyBooksArray= this.state.books.filter((book) => searchedBook.id===book.id)
+          if(filteredMyBooksArray.length === 0) {
+            return Object.assign({}, searchedBook, {shelf:'none'})
+          } else {
+            return filteredMyBooksArray[0]
+          }
+        }
+        const searchedBooksWithCorrectShelves = this.state.searchedBooks.map(returnBookWithCorrectShelf)
+        console.log(searchedBooksWithCorrectShelves)
+        this.setState({ searchedBooks: searchedBooksWithCorrectShelves })
+        console.log(this.state.searchedBooks)
       })
     } else {
       this.setState({ searchedBooks: [] })
     }
-
-    console.log(query)
   }
 
-  onRatingBook = (book, rating) => {
-
+  onStarChange = (bookToChange, newRating) => {
+    const newRatedBookArray = this.state.books.map((someBook) => {
+      if(someBook.id === bookToChange.id) {
+      return {
+          ...someBook,
+          averageRating: newRating
+       }
+      } else { return someBook}
+    })
+    this.setState({ books: newRatedBookArray})
+    this.props.history.push("/")
   }
 
   render() {
@@ -57,7 +76,6 @@ class BooksApp extends React.Component {
       <div className="app">
         <Route path='/search' render={ () => (
           <SearchBooks
-            books={books}
             query={query}
             onSearchBooks={this.onSearchBooks}
             searchedBooks={searchedBooks}
@@ -68,14 +86,17 @@ class BooksApp extends React.Component {
           <Home
             books={books}
             onChangeShelf={this.onChangeShelf}
+            onRatingBook={this.onRatingBook}
           />
         )}/>
-        <Route path='/rating' render={() => (
+        <Route path='/rating/:bookId' render={({ match }) => (
           <Rating
+            book={this.state.books.filter((book) => book.id === match.params.bookId)[0]}
+            onStarChange={this.onStarChange}
           />
         )}/>
       </div>
     )}
 }
 
-export default BooksApp
+export default withRouter(BooksApp)

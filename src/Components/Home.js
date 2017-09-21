@@ -5,12 +5,15 @@ import ListBooks from './ListBooks.js'
 
 class Home extends Component {
   render() {
+
+    const { books, onChangeShelf } = this.props
+
     return (
       <div className="list-books">
         <Header/>
         <ListBooks
-          books={this.props.books}
-          onChangeShelf={this.props.onChangeShelf}
+          books={books}
+          onChangeShelf={onChangeShelf}
         />
         <div className="open-search">
           <Link to='/search'>Add a book</Link>
