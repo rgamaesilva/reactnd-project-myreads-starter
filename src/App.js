@@ -47,9 +47,7 @@ class BooksApp extends React.Component {
           }
         }
         const searchedBooksWithCorrectShelves = this.state.searchedBooks.map(returnBookWithCorrectShelf)
-        console.log(searchedBooksWithCorrectShelves)
         this.setState({ searchedBooks: searchedBooksWithCorrectShelves })
-        console.log(this.state.searchedBooks)
       })
     } else {
       this.setState({ searchedBooks: [] })
