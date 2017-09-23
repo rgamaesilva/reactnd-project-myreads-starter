@@ -24,8 +24,9 @@ class BooksApp extends React.Component {
     const newBook = Object.assign({}, bookToUpdate, {shelf: newShelf})
     const booksExcludingBook = this.state.books.filter((someBook) => someBook.id !== bookToUpdate.id)
     const newBookArray = booksExcludingBook.concat(newBook)
-    this.setState({ books: newBookArray})
-    BooksAPI.update(bookToUpdate, newShelf)
+    BooksAPI.update(bookToUpdate, newShelf).then(() => {
+      this.setState({ books: newBookArray})
+    })
   }
 
   onSearchBooks = (event) => {

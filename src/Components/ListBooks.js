@@ -1,35 +1,37 @@
-import React, {Component} from 'react'
+import React from 'react'
 import BookShelf from './BookShelf.js'
+import PropTypes from 'prop-types'
 
-class ListBooks extends Component {
+const ListBooks = (props) => {
 
-  render () {
-
-    const { books, onChangeShelf } = this.props
-
-
-    return (
-      <div className="list-books-content">
-        <div>
-          <BookShelf
-            title='Currently Reading'
-            books={books.filter((book) => book.shelf === 'currentlyReading')}
-            onChangeShelf={onChangeShelf}
-          />
-          <BookShelf
-            title='Want to Read'
-            books={this.props.books.filter((book) => book.shelf === 'wantToRead')}
-            onChangeShelf={this.props.onChangeShelf}
-          />
-          <BookShelf
-            title='Read'
-            books={this.props.books.filter((book) => book.shelf === 'read')}
-            onChangeShelf={this.props.onChangeShelf}
-          />
-        </div>
-      </div>
-    )
+  ListBooks.propTypes = {
+    books: PropTypes.array,
+    onChangeShelf: PropTypes.func
   }
+
+  const { books, onChangeShelf } = props
+
+  return (
+    <div className="list-books-content">
+      <div>
+        <BookShelf
+          title='Currently Reading'
+          books={books.filter((book) => book.shelf === 'currentlyReading')}
+          onChangeShelf={onChangeShelf}
+        />
+        <BookShelf
+          title='Want to Read'
+          books={books.filter((book) => book.shelf === 'wantToRead')}
+          onChangeShelf={onChangeShelf}
+        />
+        <BookShelf
+          title='Read'
+          books={books.filter((book) => book.shelf === 'read')}
+          onChangeShelf={onChangeShelf}
+        />
+      </div>
+    </div>
+  )
 }
 
 export default ListBooks;
